@@ -1,0 +1,187 @@
+/* Print-specific styles for ViewJobcard */
+
+@media print {
+
+    /* Hide elements that shouldn't be printed */
+    .no-print {
+        display: none !important;
+    }
+
+    /* Show elements only when printing */
+    .print-only {
+        display: block !important;
+    }
+
+    /* Reset page margins for better print layout */
+    @page {
+        margin: 1cm;
+        size: A4;
+    }
+
+    /* Ensure the container uses full width */
+    .container-fluid {
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* Ensure cards don't break across pages */
+    .card {
+        page-break-inside: avoid;
+        break-inside: avoid;
+        border: 1px solid #000 !important;
+        box-shadow: none !important;
+        margin-bottom: 15px;
+    }
+
+    /* Card headers */
+    .card-header {
+        background-color: #f8f9fa !important;
+        border-bottom: 1px solid #000 !important;
+        padding: 10px !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* Card body */
+    .card-body {
+        padding: 10px !important;
+    }
+
+    /* Tables */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        page-break-inside: avoid;
+    }
+
+    table th,
+    table td {
+        border: 1px solid #000 !important;
+        padding: 8px !important;
+        font-size: 12px;
+    }
+
+    table thead {
+        background-color: #f8f9fa !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* Ensure background colors print */
+    .bg-light {
+        background-color: #f8f9fa !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* Row layout for services, parts, labour */
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        page-break-inside: avoid;
+    }
+
+    .col-md-4 {
+        flex: 0 0 33.333333%;
+        max-width: 33.333333%;
+        padding: 0 5px;
+    }
+
+    .col-md-12 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    /* Text colors - ensure they print */
+    .text-primary {
+        color: #0d6efd !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .text-success {
+        color: #198754 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .text-danger {
+        color: #dc3545 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .text-info {
+        color: #0dcaf0 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* Badge styling */
+    .badge {
+        border: 1px solid #000;
+        padding: 5px 10px;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .bg-success {
+        background-color: #198754 !important;
+        color: white !important;
+    }
+
+    .bg-warning {
+        background-color: #ffc107 !important;
+        color: #000 !important;
+    }
+
+    .bg-danger {
+        background-color: #dc3545 !important;
+        color: white !important;
+    }
+
+    /* Font sizes */
+    .fw-bold {
+        font-weight: bold !important;
+    }
+
+    .fs-5 {
+        font-size: 1.1rem !important;
+    }
+
+    /* Spacing */
+    .mb-4 {
+        margin-bottom: 1rem !important;
+    }
+
+    .mt-4 {
+        margin-top: 1rem !important;
+    }
+
+    .mb-5 {
+        margin-bottom: 1.5rem !important;
+    }
+
+    /* Remove box shadows and transitions */
+    * {
+        box-shadow: none !important;
+        transition: none !important;
+    }
+
+    /* Ensure text is black for readability */
+    body {
+        color: #000 !important;
+    }
+
+    /* Table hover effects should be removed */
+    .table-hover tbody tr:hover {
+        background-color: transparent !important;
+    }
+
+    /* Ensure proper spacing between sections */
+    .row+.row {
+        margin-top: 15px;
+    }
+}

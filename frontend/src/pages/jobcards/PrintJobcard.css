@@ -1,0 +1,78 @@
+/* Print Jobcard Styles */
+
+.print-container {
+    max-width: 900px;
+    font-size: 11px;
+}
+
+.jobcard-table td,
+.jobcard-table th {
+    padding: 4px 6px !important;
+    font-size: 11px;
+    vertical-align: middle;
+}
+
+.service-table td,
+.service-table th {
+    padding: 3px 4px !important;
+    font-size: 10px;
+    vertical-align: middle;
+}
+
+.totals-table td {
+    padding: 4px 6px !important;
+    font-size: 11px;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table td,
+table th {
+    border: 1px solid #000 !important;
+}
+
+.bg-light {
+    background-color: #f0f0f0 !important;
+}
+
+@media print {
+    @page {
+        margin: 0.5cm;
+        size: A4;
+    }
+
+    body {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        margin: 0;
+        padding: 0;
+    }
+
+    .print-container {
+        max-width: 100%;
+        padding: 10px !important;
+    }
+
+    .page-break-avoid {
+        page-break-inside: avoid;
+    }
+
+    table {
+        page-break-inside: avoid;
+    }
+
+    .bg-light {
+        background-color: #f0f0f0 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .bg-dark {
+        background-color: #333 !important;
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}

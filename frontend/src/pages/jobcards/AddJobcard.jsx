@@ -156,10 +156,15 @@ const AddJobcard = () => {
                     city: latestJobcard.city || ''
                 });
 
+                // Find the exact model name from availableModels (case-insensitive match)
+                const matchedModel = availableModels.find(
+                    m => m.name.toLowerCase() === (latestJobcard.model_name || '').toLowerCase()
+                );
+
                 // Auto-fill vehicle details
                 setVehicle(prev => ({
                     ...prev,
-                    modelId: latestJobcard.model_name || prev.modelId,
+                    modelId: matchedModel ? matchedModel.name : (latestJobcard.model_name || prev.modelId),
                     chassisNo: latestJobcard.chassis_no || prev.chassisNo,
                     engineNo: latestJobcard.engine_no || prev.engineNo
                 }));

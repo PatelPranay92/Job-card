@@ -5,7 +5,7 @@ const Jobcard = require('../models/Jobcard');
 // GET all jobcards (with optional basic search)
 router.get('/', async (req, res) => {
     try {
-        const { start_date, end_date } = req.query;
+        const { start_date, end_date, reg_no, customer_name, jobcard_no } = req.query;
         let query = {};
 
         // Date range filter
@@ -21,6 +21,21 @@ router.get('/', async (req, res) => {
             };
         }
 
+        // Reg No filter (case-insensitive)
+        if (reg_no) {
+            query.reg_no = { $regex: `^${reg_no.trim()}$`, $options: 'i' };
+        }
+
+        // Customer name filter (partial match)
+        if (customer_name) {
+            query.customer_name = { $regex: customer_name.trim(), $options: 'i' };
+        }
+
+        // Jobcard no filter (partial match)
+        if (jobcard_no) {
+            query.jobcard_no = { $regex: jobcard_no.trim(), $options: 'i' };
+        }
+
         // Sort by newest first
         const jobcards = await Jobcard.find(query).sort({ date: -1, seq_id: -1 });
         res.json(jobcards);
@@ -28,6 +43,7 @@ router.get('/', async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 });
+
 
 // GET single jobcard
 router.get('/:id', async (req, res) => {

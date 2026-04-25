@@ -13,8 +13,6 @@ const PrintJobcard = () => {
             try {
                 const res = await api.get(`/jobcards/${id}`);
                 setJobcard(res.data);
-                // Auto-print after data loads
-                setTimeout(() => window.print(), 500);
             } catch (err) {
                 console.error(err);
                 alert('Error fetching jobcard');
@@ -22,6 +20,14 @@ const PrintJobcard = () => {
         };
         fetchJobcard();
     }, [id]);
+
+    // Auto-print once jobcard data is loaded and rendered
+    useEffect(() => {
+        if (jobcard) {
+            const timer = setTimeout(() => window.print(), 800);
+            return () => clearTimeout(timer);
+        }
+    }, [jobcard]);
 
     if (!jobcard) {
         return <div className="text-center py-5">Loading...</div>;
@@ -38,7 +44,7 @@ const PrintJobcard = () => {
             {/* Header with Company Name */}
             <div className="text-center mb-3">
                 <h2 className="fw-bold mb-0" style={{ fontSize: '28px' }}>Gayatri Auto</h2>
-                <p className="mb-0" style={{ fontSize: '11px' }}>Address Line 1, Address Line 2</p>
+                <p className="mb-0" style={{ fontSize: '11px' }}>Nr Sheth M.K school,N.H.8 At. Tajpur kui, ta.prantij, Prantij, Gujarat 383205</p>
                 <p className="mb-0" style={{ fontSize: '11px' }}>Phone:+91 8238133400</p>
             </div>
 
@@ -110,45 +116,7 @@ const PrintJobcard = () => {
                 </tbody>
             </Table>
 
-            {/* Service Detail Section */}
-            <div className="mt-3">
-                <h6 className="fw-bold mb-2 bg-dark text-white p-2">Service Detail</h6>
-                <Table bordered size="sm" className="service-table">
-                    <thead>
-                        <tr>
-                            <th width="5%" className="text-center">No.</th>
-                            <th width="28%">Service Detail</th>
-                            <th width="10%" className="text-end">Amount</th>
-                            <th width="5%" className="text-center">No.</th>
-                            <th width="28%">Service Detail</th>
-                            <th width="10%" className="text-end">Amount</th>
-                            <th width="5%" className="text-center">No.</th>
-                            <th width="9%" className="text-end">Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {/* Services */}
-                        {Array.from({ length: 10 }).map((_, index) => {
-                            const service1 = jobcard.services?.[index * 3];
-                            const service2 = jobcard.services?.[index * 3 + 1];
-                            const service3 = jobcard.services?.[index * 3 + 2];
 
-                            return (
-                                <tr key={index}>
-                                    <td className="text-center">{service1 ? index * 3 + 1 : ''}</td>
-                                    <td>{service1?.name || ''}</td>
-                                    <td className="text-end">{service1 ? `₹ ${service1.amount.toFixed(2)}` : ''}</td>
-                                    <td className="text-center">{service2 ? index * 3 + 2 : ''}</td>
-                                    <td>{service2?.name || ''}</td>
-                                    <td className="text-end">{service2 ? `₹ ${service2.amount.toFixed(2)}` : ''}</td>
-                                    <td className="text-center">{service3 ? index * 3 + 3 : ''}</td>
-                                    <td className="text-end">{service3 ? `₹ ${service3.amount.toFixed(2)}` : ''}</td>
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </Table>
-            </div>
 
             {/* Parts and Labour Summary */}
             <Table bordered size="sm" className="mt-2">

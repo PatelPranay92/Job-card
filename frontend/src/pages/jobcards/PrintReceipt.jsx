@@ -13,8 +13,6 @@ const PrintReceipt = () => {
             try {
                 const res = await api.get(`/jobcards/${id}`);
                 setJobcard(res.data);
-                // Auto-print after data loads
-                setTimeout(() => window.print(), 500);
             } catch (err) {
                 console.error(err);
                 alert('Error fetching jobcard');
@@ -22,6 +20,14 @@ const PrintReceipt = () => {
         };
         fetchJobcard();
     }, [id]);
+
+    // Auto-print once jobcard data is loaded and rendered
+    useEffect(() => {
+        if (jobcard) {
+            const timer = setTimeout(() => window.print(), 800);
+            return () => clearTimeout(timer);
+        }
+    }, [jobcard]);
 
     if (!jobcard) {
         return <div className="text-center py-5">Loading...</div>;
@@ -38,7 +44,7 @@ const PrintReceipt = () => {
             {/* Header with Company Name */}
             <div className="text-center mb-3">
                 <h2 className="fw-bold mb-0" style={{ fontSize: '28px', color: '#0066cc' }}>Gayatri Auto</h2>
-                <p className="mb-0" style={{ fontSize: '11px' }}>N H No 8, Rajpur Hali, ta: Prantij</p>
+                <p className="mb-0" style={{ fontSize: '11px' }}>Nr Sheth M.K school,N.H.8 At. Tajpur kui, ta.prantij, Prantij, Gujarat 383205</p>
                 <p className="mb-0" style={{ fontSize: '11px' }}>Phone: +91 8238133400</p>
             </div>
 

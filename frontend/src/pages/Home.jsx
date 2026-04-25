@@ -66,7 +66,7 @@ const Home = () => {
     };
 
     return (
-        <div className="container mt-4">
+        <div>
             {/* Daily Total Box */}
             <div className="stat-card mb-4">
                 <div>
@@ -77,13 +77,13 @@ const Home = () => {
                 </div>
             </div>
 
-            <div className="d-flex justify-content-between align-items-center mb-3">
-                <h3>Today Jobcards</h3>
+            <div className="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                <h3 className="mb-0">Today Jobcards</h3>
             </div>
 
             <Card className="card-custom">
-                <div className="table-responsive">
-                    <Table hover className="table-custom text-center align-middle">
+                <div className="table-responsive" style={{ marginBottom: 0 }}>
+                    <Table hover className="table-custom text-center align-middle" style={{ minWidth: '750px' }}>
                         <thead>
                             <tr>
                                 <th>Jobcard No</th>

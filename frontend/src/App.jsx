@@ -44,7 +44,7 @@ const Layout = () => {
   return (
     <>
       <Header />
-      <div className="container py-4">
+      <div className="container-fluid px-3 px-md-4 py-3 py-md-4" style={{ maxWidth: '1400px', margin: '0 auto' }}>
         <Outlet />
       </div>
     </>

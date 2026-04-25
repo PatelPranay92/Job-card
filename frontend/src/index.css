@@ -572,7 +572,189 @@ h2 {
   animation: fadeInUp 0.6s ease-out;
 }
 
-/* Print Styles */
+/* ════════════════════════════════════════
+   RESPONSIVE — Mobile First
+   ════════════════════════════════════════ */
+
+/* Responsive table wrapper utility */
+.responsive-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--border-radius);
+}
+
+/* ── ≤ 1024px (Tablets landscape) ─────── */
+@media (max-width: 1024px) {
+  h2 {
+    font-size: 1.7rem;
+  }
+
+  .stat-value {
+    font-size: 2.2rem;
+  }
+
+  .table-custom {
+    min-width: 700px;
+  }
+}
+
+/* ── ≤ 768px (Tablets portrait / large phones) */
+@media (max-width: 768px) {
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
+
+  /* Cards */
+  .card-custom {
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  .card-custom .card-header {
+    padding-bottom: 10px !important;
+    margin-bottom: 12px;
+  }
+
+  /* Stat card — stack vertically */
+  .stat-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 20px;
+  }
+
+  .stat-value {
+    font-size: 2rem;
+  }
+
+  /* Tables — force horizontal scroll */
+  .table-custom,
+  .table,
+  table {
+    min-width: 600px;
+  }
+
+  /* Wrap any Bootstrap Table in a scroll wrapper */
+  .table-responsive,
+  .responsive-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Disable hover slide animation on small screens */
+  .table-custom tbody tr:hover {
+    transform: none;
+  }
+
+  /* Buttons — make full width in stacked groups */
+  .d-flex.gap-2.flex-column-mobile {
+    flex-direction: column !important;
+  }
+
+  /* Page header stacking */
+  .d-flex.justify-content-between {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* Forms */
+  .form-control,
+  .form-select {
+    font-size: 0.9rem;
+    padding: 10px 12px;
+  }
+
+  /* Badges */
+  .badge {
+    font-size: 0.72rem;
+    padding: 5px 10px;
+  }
+
+  /* Buttons */
+  .btn {
+    padding: 8px 16px;
+    font-size: 0.88rem;
+  }
+}
+
+/* ── ≤ 576px (Small phones) ─────────────── */
+@media (max-width: 576px) {
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  /* Reduce body gradient animation cost */
+  body::before {
+    display: none;
+  }
+
+  .card-custom {
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+  }
+
+  .stat-card {
+    padding: 16px;
+  }
+
+  .stat-value {
+    font-size: 1.75rem;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+  }
+
+  /* Make action button groups wrap nicely */
+  .d-flex.gap-2 {
+    flex-wrap: wrap;
+  }
+
+  /* Reduce button padding on phone */
+  .btn {
+    padding: 7px 12px;
+    font-size: 0.82rem;
+  }
+
+  /* Input groups full width */
+  .input-group {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Table scroll indicator shadow hint */
+  .table-responsive::after,
+  .responsive-table-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30px;
+    height: 100%;
+    background: linear-gradient(to left, rgba(255,255,255,0.8), transparent);
+    pointer-events: none;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .table-responsive,
+  .responsive-table-wrap {
+    position: relative;
+  }
+
+  /* Login card full width on very small phones */
+  .login-card {
+    padding: 28px 20px;
+    border-radius: 12px;
+  }
+}
+
+/* Print — hide non-print elements */
 @media print {
   body {
     background: white;
@@ -583,43 +765,7 @@ h2 {
   }
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  h2 {
-    font-size: 1.5rem;
-  }
-
-  .stat-value {
-    font-size: 2rem;
-  }
-
-  .card-custom {
-    padding: 16px;
-  }
-
-  .table-custom tbody tr:hover {
-    transform: none;
-  }
-}
-
-/* Loading States */
-.loading {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 3px solid rgba(0, 128, 128, 0.3);
-  border-radius: 50%;
-  border-top-color: var(--primary-color);
-  animation: spin 1s ease-in-out infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Utility Classes */
+/* Utility */
 .text-primary {
   color: var(--primary-color) !important;
 }

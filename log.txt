@@ -1,5 +1,0 @@
-* abb4553 feat: Add Print Receipt and View Jobcard functionality
-* 8d72092 Cors Issue
-* c5fbb66 Api
-* ea1916e Jobcard
-* b29a9c2 Initial commit

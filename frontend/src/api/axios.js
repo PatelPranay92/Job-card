@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-    baseURL: 'https://job-card-enin.vercel.app/api', // Adjust if port is different
+    baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
 export default instance;

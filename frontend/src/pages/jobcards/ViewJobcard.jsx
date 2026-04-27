@@ -108,12 +108,6 @@ const ViewJobcard = () => {
                                         <td>{jobcard.reg_no}</td>
                                     </tr>
                                     <tr>
-                                        <th className="bg-light">Engine No</th>
-                                        <td>{jobcard.engine_no}</td>
-                                        <th className="bg-light">Chassis No</th>
-                                        <td>{jobcard.chassis_no}</td>
-                                    </tr>
-                                    <tr>
                                         <th className="bg-light">KM</th>
                                         <td>{jobcard.km}</td>
                                         <th className="bg-light">Petrol</th>
@@ -127,30 +121,6 @@ const ViewJobcard = () => {
             </Row>
 
             <Row>
-                <Col md={4}>
-                    <Card className="card-custom h-100">
-                        <Card.Header className="bg-light border-bottom pt-3">
-                            <h6 className="mb-0 text-primary">Services</h6>
-                        </Card.Header>
-                        <Card.Body className="p-0">
-                            <Table hover className="table-custom mb-0">
-                                <thead>
-                                    <tr><th>Service</th><th className="text-end">Amount</th></tr>
-                                </thead>
-                                <tbody>
-                                    {jobcard.services?.map((svc, i) => (
-                                        <tr key={i}><td>{svc.name}</td><td className="text-end">₹ {svc.amount.toFixed(2)}</td></tr>
-                                    ))}
-                                    <tr className="fw-bold bg-light">
-                                        <td>Total</td>
-                                        <td className="text-end">₹ {servicesTotal.toFixed(2)}</td>
-                                    </tr>
-                                </tbody>
-                            </Table>
-                        </Card.Body>
-                    </Card>
-                </Col>
-
                 <Col md={4}>
                     <Card className="card-custom h-100">
                         <Card.Header className="bg-light border-bottom pt-3">

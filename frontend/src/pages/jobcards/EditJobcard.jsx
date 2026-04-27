@@ -255,18 +255,10 @@ const EditJobcard = () => {
                                 </Form.Select>
                             </Col>
                             <Col md={2}>
-                                <Form.Label>Chassis No</Form.Label>
-                                <Form.Control type="text" name="chassisNo" value={vehicle.chassisNo} onChange={handleVehicleChange} />
-                            </Col>
-                            <Col md={2}>
-                                <Form.Label>Engine No</Form.Label>
-                                <Form.Control type="text" name="engineNo" value={vehicle.engineNo} onChange={handleVehicleChange} />
-                            </Col>
-                            <Col md={1}>
                                 <Form.Label>KM</Form.Label>
                                 <Form.Control type="number" name="km" value={vehicle.km} onChange={handleVehicleChange} />
                             </Col>
-                            <Col md={1}>
+                            <Col md={2}>
                                 <Form.Label>Petrol</Form.Label>
                                 <Form.Select name="petrol" value={vehicle.petrol} onChange={handleVehicleChange}>
                                     <option value="">Select</option>
@@ -276,10 +268,6 @@ const EditJobcard = () => {
                                     <option value="3/4">3/4</option>
                                     <option value="F">Full</option>
                                 </Form.Select>
-                            </Col>
-                            <Col md={2}>
-                                <Form.Label>Key No</Form.Label>
-                                <Form.Control type="text" name="keyNo" value={vehicle.keyNo} onChange={handleVehicleChange} />
                             </Col>
                         </Row>
                         <Row className="g-3 mt-2">
@@ -291,14 +279,6 @@ const EditJobcard = () => {
                                 <Form.Label>Helper Name</Form.Label>
                                 <Form.Control type="text" name="helperName" value={vehicle.helperName} onChange={handleVehicleChange} />
                             </Col>
-                            <Col md={2}>
-                                <Form.Label>Vehicle Type</Form.Label>
-                                <Form.Select name="vehicleType" value={vehicle.vehicleType} onChange={handleVehicleChange}>
-                                    <option value="Bike">Bike</option>
-                                    <option value="Scooter">Scooter</option>
-                                    <option value="Car">Car</option>
-                                </Form.Select>
-                            </Col>
                             <Col md={4}>
                                 <Form.Label>Remarks</Form.Label>
                                 <Form.Control type="text" name="remarks" value={vehicle.remarks} onChange={handleVehicleChange} />
@@ -309,39 +289,6 @@ const EditJobcard = () => {
 
                 {/* Services, Parts, Labour Grid */}
                 <Row>
-                    {/* Services */}
-                    <Col lg={4}>
-                        <Card className="card-custom h-100">
-                            <Card.Header className="bg-light border-bottom pt-3 d-flex justify-content-between align-items-center">
-                                <h6 className="mb-0 text-primary"><Wrench size={18} className="me-1" /> Services</h6>
-                                <Button size="sm" variant="outline-primary" onClick={() => addRow(setServices)}><Plus size={14} /></Button>
-                            </Card.Header>
-                            <Card.Body className="p-2">
-                                {services.map((svc, i) => (
-                                    <div key={i} className="d-flex mb-2 gap-2">
-                                        <Form.Control
-                                            size="sm"
-                                            placeholder="Service Name"
-                                            value={svc.name}
-                                            onChange={(e) => updateRow(setServices, i, 'name', e.target.value.toUpperCase())}
-                                        />
-                                        <Form.Control
-                                            size="sm"
-                                            type="number"
-                                            placeholder="Amount"
-                                            value={svc.amount}
-                                            onChange={(e) => updateRow(setServices, i, 'amount', e.target.value)}
-                                            style={{ width: '80px' }}
-                                        />
-                                        <Button size="sm" variant="outline-danger" onClick={() => removeRow(setServices, i)} tabIndex="-1">
-                                            <Trash2 size={14} />
-                                        </Button>
-                                    </div>
-                                ))}
-                                <div className="text-end fw-bold mt-2 text-primary">Total: ₹ {totals.service.toFixed(2)}</div>
-                            </Card.Body>
-                        </Card>
-                    </Col>
 
                     {/* Parts */}
                     <Col lg={4}>

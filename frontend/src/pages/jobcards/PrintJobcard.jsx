@@ -138,37 +138,6 @@ const PrintJobcard = () => {
                 </tbody>
             </Table>
 
-            {/* Totals Section */}
-            <Table bordered size="sm" className="mt-2 totals-table">
-                <tbody>
-                    <tr>
-                        <td className="fw-bold bg-light" width="15%">Service</td>
-                        <td width="18%" className="text-end">₹ {servicesTotal.toFixed(2)}</td>
-                        <td className="fw-bold bg-light" width="15%">Parts</td>
-                        <td width="18%" className="text-end">₹ {partsTotal.toFixed(2)}</td>
-                        <td className="fw-bold bg-light" width="18%">Labour Charge</td>
-                        <td width="16%" className="text-end">₹ {labourTotal.toFixed(2)}</td>
-                    </tr>
-                    <tr>
-                        <td className="fw-bold bg-light">CGST</td>
-                        <td className="text-end">-</td>
-                        <td className="fw-bold bg-light">SGST</td>
-                        <td className="text-end">-</td>
-                        <td className="fw-bold bg-light">Total GST</td>
-                        <td className="text-end">-</td>
-                    </tr>
-                    <tr>
-                        <td colSpan="4" className="text-end fw-bold">Total Sub</td>
-                        <td className="fw-bold bg-light">₹ {jobcard.amount.toFixed(2)}</td>
-                        <td className="text-end fw-bold">₹ {jobcard.amount.toFixed(2)}</td>
-                    </tr>
-                    <tr>
-                        <td colSpan="4" className="text-end fw-bold">Final Total (Parts + Labour) Rs.</td>
-                        <td colSpan="2" className="text-end fw-bold fs-5">₹ {jobcard.amount.toFixed(2)}</td>
-                    </tr>
-                </tbody>
-            </Table>
-
             {/* Footer */}
             <div className="text-center mt-3">
                 <p className="mb-0 fw-bold">Signature</p>

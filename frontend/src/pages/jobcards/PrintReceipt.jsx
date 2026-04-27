@@ -96,26 +96,22 @@ const PrintReceipt = () => {
                     <tr>
                         <td className="fw-bold bg-light">Customer Name</td>
                         <td>{jobcard.customer_name}</td>
-                        <td className="fw-bold bg-light">Engine No.</td>
-                        <td>{jobcard.engine_no}</td>
+                        <td className="fw-bold bg-light">Address</td>
+                        <td>{jobcard.address}, {jobcard.city}</td>
+                        {/* <td className="fw-bold bg-light">Engine No.</td>
+                        <td>{jobcard.engine_no}</td> */}
                     </tr>
 
                     {/* Address and Chassis No */}
                     <tr>
-                        <td className="fw-bold bg-light">Address</td>
-                        <td>{jobcard.address}, {jobcard.city}</td>
-                        <td className="fw-bold bg-light">Chassis No.</td>
-                        <td>{jobcard.chassis_no}</td>
-                    </tr>
 
-                    {/* Phone, City and Petrol */}
-                    <tr>
                         <td className="fw-bold bg-light">Phone No.</td>
                         <td>{jobcard.phone}</td>
                         <td className="fw-bold bg-light">City / Village</td>
                         <td>{jobcard.city}</td>
+                        {/* <td className="fw-bold bg-light">Chassis No.</td>
+                        <td>{jobcard.chassis_no}</td> */}
                     </tr>
-
                     <tr>
                         <td colSpan="2"></td>
                         <td className="fw-bold bg-light">Petrol</td>
@@ -124,18 +120,10 @@ const PrintReceipt = () => {
 
                     {/* Coupon No and KM */}
                     <tr>
-                        <td className="fw-bold bg-light">Coupon No.</td>
-                        <td></td>
                         <td className="fw-bold bg-light">Km</td>
                         <td>{jobcard.km}</td>
-                    </tr>
-
-                    {/* Model and Key No */}
-                    <tr>
                         <td className="fw-bold bg-light">Model</td>
                         <td>{jobcard.model_name}</td>
-                        <td className="fw-bold bg-light">Key No.</td>
-                        <td></td>
                     </tr>
 
                     {/* Mechanic Name and Helper Name */}

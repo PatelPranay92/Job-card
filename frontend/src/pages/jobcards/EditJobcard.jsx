@@ -151,16 +151,8 @@ const EditJobcard = () => {
             parts: parts.filter(p => p.name && p.amount),
             labour: labour.filter(l => l.name && l.amount),
             amount: totals.grandTotal,
-            // Assuming we don't reset paid/remaining here logic might need refinement if total changes
-            // For now, let's just send the main fields. 
-            // If total changes, remaining should be recalculated by backend or here.
-            remaining: totals.grandTotal // Simple logic: reset remaining to total (WRONG if partial paid).
-            // Better logic: backend should handle remaining calculation or we fetch current paid and calc here.
+            remaining: totals.grandTotal
         };
-
-        // For simplicity in this step, let's just update basic info.
-        // Ideally fetch current 'paid' and update 'remaining' = 'amount' - 'paid'.
-
         try {
             await api.put(`/jobcards/${id}`, payload);
             alert('Jobcard updated successfully!');

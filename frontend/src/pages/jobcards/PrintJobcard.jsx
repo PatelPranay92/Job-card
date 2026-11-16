@@ -33,11 +33,7 @@ const PrintJobcard = () => {
         return <div className="text-center py-5">Loading...</div>;
     }
 
-    const calculateTotal = (items) => items ? items.reduce((sum, item) => sum + item.amount, 0) : 0;
 
-    const servicesTotal = calculateTotal(jobcard.services);
-    const partsTotal = calculateTotal(jobcard.parts);
-    const labourTotal = calculateTotal(jobcard.labour);
 
     return (
         <Container className="py-3 print-container">

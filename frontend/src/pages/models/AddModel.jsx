@@ -1,236 +1,271 @@
-import { useState, useEffect } from 'react';
-import { Card, Form, Button, Table, Alert, Row, Col, InputGroup, Badge } from 'react-bootstrap';
-import { Plus, Trash2, Database, Car, Search, CheckCircle } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import {
+  Car,
+  Plus,
+  Trash2,
+  Search,
+  CheckCircle,
+  AlertCircle,
+  Database,
+  ArrowLeft,
+  Sparkles,
+} from 'lucide-react';
 import api from '../../api/axios';
+import ConfirmDialog from '../../components/ConfirmDialog';
+import EmptyState from '../../components/EmptyState';
 
 const AddModel = () => {
-    const navigate = useNavigate();
-    const [models, setModels] = useState([]);
-    const [newModel, setNewModel] = useState({ name: '', type: 'Bike' });
-    const [message, setMessage] = useState(null);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [loading, setLoading] = useState(false);
+  const [models, setModels] = useState([]);
+  const [newModel, setNewModel] = useState({ name: '', type: 'Bike' });
+  const [message, setMessage] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [modelToDelete, setModelToDelete] = useState(null);
 
-    const fetchModels = async () => {
-        try {
-            const res = await api.get('/models');
-            setModels(res.data);
-        } catch (err) {
-            console.error('Error fetching models', err);
-        }
-    };
+  const fetchModels = async () => {
+    try {
+      const res = await api.get('/models');
+      setModels(res.data || []);
+    } catch (err) {
+      console.error('Error fetching models:', err);
+    }
+  };
 
-    useEffect(() => {
-        fetchModels();
-    }, []);
+  useEffect(() => {
+    fetchModels();
+  }, []);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setMessage(null);
-        if (!newModel.name) return;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setMessage(null);
+    if (!newModel.name.trim()) return;
 
-        setLoading(true);
-        try {
-            await api.post('/models', newModel);
-            setMessage({ type: 'success', text: 'Model added successfully!' });
-            setNewModel({ name: '', type: 'Bike' });
-            fetchModels();
+    setLoading(true);
+    try {
+      await api.post('/models', {
+        name: newModel.name.trim().toUpperCase(),
+        type: newModel.type,
+      });
+      setMessage({ type: 'success', text: `Model "${newModel.name.toUpperCase()}" added successfully!` });
+      setNewModel({ name: '', type: 'Bike' });
+      fetchModels();
+      setTimeout(() => setMessage(null), 3500);
+    } catch (err) {
+      setMessage({
+        type: 'danger',
+        text: err.response?.data?.message || 'Error adding vehicle model',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
-            // Auto-hide success message after 3 seconds
-            setTimeout(() => setMessage(null), 3000);
-        } catch (err) {
-            setMessage({ type: 'danger', text: err.response?.data?.message || 'Error adding model' });
-        } finally {
-            setLoading(false);
-        }
-    };
+  const confirmDeleteModel = async () => {
+    if (!modelToDelete) return;
+    try {
+      await api.delete(`/models/${modelToDelete._id}`);
+      setMessage({ type: 'success', text: `Model "${modelToDelete.name}" deleted successfully!` });
+      setModelToDelete(null);
+      fetchModels();
+      setTimeout(() => setMessage(null), 3500);
+    } catch (err) {
+      console.error(err);
+      setMessage({ type: 'danger', text: 'Error deleting model' });
+    }
+  };
 
-    const handleDelete = async (id) => {
-        if (!window.confirm('Are you sure you want to delete this model?')) return;
-        try {
-            await api.delete(`/models/${id}`);
-            setMessage({ type: 'success', text: 'Model deleted successfully!' });
-            fetchModels();
-            setTimeout(() => setMessage(null), 3000);
-        } catch (err) {
-            setMessage({ type: 'danger', text: 'Error deleting model' });
-        }
-    };
+  const filteredModels = models.filter(
+    (m) =>
+      m.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (m.type || '').toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-    const filteredModels = models.filter(model =>
-        model.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        model.type.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+  const getTypeBadge = (type) => {
+    const t = (type || 'Bike').toLowerCase();
+    if (t === 'car') {
+      return <span className="badge bg-primary-light text-primary border border-primary-subtle">Car</span>;
+    }
+    if (t === 'scooter') {
+      return <span className="badge bg-warning-light text-warning-text border border-warning-border">Scooter</span>;
+    }
+    return <span className="badge bg-success-light text-success-text border border-success-border">Bike</span>;
+  };
 
-    return (
-        <div className="container-fluid">
-            <div className="d-flex justify-content-between align-items-center mb-4">
-                <h2 className="text-primary fw-bold">Manage Vehicle Models</h2>
-                <Button variant="secondary" onClick={() => navigate('/')}>
-                    Back to Home
-                </Button>
+  return (
+    <div>
+      {/* Page Header */}
+      <div className="page-header-saas">
+        <div>
+          <h1 className="page-title">Vehicle Models</h1>
+          <p className="page-subtitle">
+            Configure vehicle models and types available for selection during job card creation.
+          </p>
+        </div>
+      </div>
+
+      {message && (
+        <div
+          className={`alert alert-${message.type} py-2 px-3 small d-flex align-items-center gap-2 mb-4`}
+        >
+          {message.type === 'success' ? <CheckCircle size={16} /> : <AlertCircle size={16} />}
+          <span>{message.text}</span>
+        </div>
+      )}
+
+      <div className="row g-4">
+        {/* Left Column: Add New Model */}
+        <div className="col-12 col-lg-4">
+          <div className="saas-card mb-4">
+            <div className="saas-card-header">
+              <div className="saas-card-title">
+                <Plus size={18} className="text-primary" />
+                <span>Add Vehicle Model</span>
+              </div>
             </div>
 
-            {message && (
-                <Alert
-                    variant={message.type}
-                    dismissible
-                    onClose={() => setMessage(null)}
-                    className="d-flex align-items-center"
+            <div className="saas-card-body">
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <label className="form-label-saas">
+                    Model Name<span className="required-star">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. SPLENDOR PLUS, ACTIVA 6G"
+                    value={newModel.name}
+                    onChange={(e) =>
+                      setNewModel({ ...newModel, name: e.target.value.toUpperCase() })
+                    }
+                    required
+                    className="form-control-saas"
+                  />
+                  <small className="text-muted" style={{ fontSize: '11px' }}>
+                    Auto-converts to uppercase for consistency
+                  </small>
+                </div>
+
+                <div className="mb-4">
+                  <label className="form-label-saas">Vehicle Classification</label>
+                  <select
+                    value={newModel.type}
+                    onChange={(e) => setNewModel({ ...newModel, type: e.target.value })}
+                    className="form-select-saas"
+                  >
+                    <option value="Bike">Motorcycle / Bike</option>
+                    <option value="Scooter">Scooter / Moped</option>
+                    <option value="Car">Car / Four Wheeler</option>
+                  </select>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="btn-saas btn-saas-primary w-100 py-2"
                 >
-                    {message.type === 'success' && <CheckCircle size={20} className="me-2" />}
-                    {message.text}
-                </Alert>
-            )}
+                  <Plus size={16} />
+                  <span>{loading ? 'Adding...' : 'Save Model'}</span>
+                </button>
+              </form>
+            </div>
+          </div>
 
-            <Row>
-                <Col lg={4}>
-                    <Card className="card-custom mb-4">
-                        <Card.Header className="bg-white border-bottom-0 pt-3">
-                            <h5 className="mb-0 text-secondary">
-                                <Plus size={20} className="me-2" />
-                                Add New Model
-                            </h5>
-                        </Card.Header>
-                        <Card.Body>
-                            <Form onSubmit={handleSubmit}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Model Name</Form.Label>
-                                    <InputGroup>
-                                        <InputGroup.Text>
-                                            <Car size={18} />
-                                        </InputGroup.Text>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder="e.g. SPLENDOR, ACTIVA"
-                                            value={newModel.name}
-                                            onChange={(e) => setNewModel({ ...newModel, name: e.target.value.toUpperCase() })}
-                                            required
-                                        />
-                                    </InputGroup>
-                                </Form.Group>
-
-                                <Form.Group className="mb-4">
-                                    <Form.Label>Vehicle Type</Form.Label>
-                                    <Form.Select
-                                        value={newModel.type}
-                                        onChange={(e) => setNewModel({ ...newModel, type: e.target.value })}
-                                    >
-                                        <option value="Bike">Bike</option>
-                                        <option value="Scooter">Scooter</option>
-                                        <option value="Car">Car</option>
-                                    </Form.Select>
-                                </Form.Group>
-
-                                <Button
-                                    variant="primary"
-                                    type="submit"
-                                    className="w-100"
-                                    size="lg"
-                                    disabled={loading}
-                                >
-                                    {loading ? (
-                                        <>
-                                            <span className="loading me-2"></span>
-                                            Adding...
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Plus size={18} className="me-2" />
-                                            Add Model
-                                        </>
-                                    )}
-                                </Button>
-                            </Form>
-
-                            <div className="mt-4 p-3 bg-light rounded">
-                                <h6 className="text-muted mb-2">Quick Stats</h6>
-                                <div className="d-flex justify-content-between">
-                                    <span className="text-muted">Total Models:</span>
-                                    <Badge bg="primary" className="fs-6">{models.length}</Badge>
-                                </div>
-                            </div>
-                        </Card.Body>
-                    </Card>
-                </Col>
-
-                <Col lg={8}>
-                    <Card className="card-custom">
-                        <Card.Header className="bg-white border-bottom-0 pt-3">
-                            <div className="d-flex justify-content-between align-items-center">
-                                <h5 className="mb-0 text-secondary">
-                                    <Database size={20} className="me-2" />
-                                    Existing Models ({filteredModels.length})
-                                </h5>
-                                <InputGroup style={{ maxWidth: '300px' }}>
-                                    <InputGroup.Text>
-                                        <Search size={16} />
-                                    </InputGroup.Text>
-                                    <Form.Control
-                                        placeholder="Search models..."
-                                        value={searchTerm}
-                                        onChange={(e) => setSearchTerm(e.target.value)}
-                                    />
-                                </InputGroup>
-                            </div>
-                        </Card.Header>
-                        <Card.Body>
-                            <div className="table-responsive" style={{ maxHeight: '500px', overflowY: 'auto' }}>
-                                <Table hover className="table-custom mb-0">
-                                    <thead className="sticky-top" style={{ backgroundColor: 'var(--bg-color)' }}>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Model Name</th>
-                                            <th>Type</th>
-                                            <th className="text-end">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {filteredModels.length > 0 ? (
-                                            filteredModels.map((model, index) => (
-                                                <tr key={model._id}>
-                                                    <td className="text-muted">{index + 1}</td>
-                                                    <td className="fw-bold">{model.name}</td>
-                                                    <td>
-                                                        <Badge
-                                                            bg={
-                                                                model.type === 'Bike' ? 'primary' :
-                                                                    model.type === 'Scooter' ? 'info' :
-                                                                        'success'
-                                                            }
-                                                        >
-                                                            {model.type}
-                                                        </Badge>
-                                                    </td>
-                                                    <td className="text-end">
-                                                        <Button
-                                                            variant="outline-danger"
-                                                            size="sm"
-                                                            onClick={() => handleDelete(model._id)}
-                                                            title="Delete Model"
-                                                        >
-                                                            <Trash2 size={16} />
-                                                        </Button>
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        ) : (
-                                            <tr>
-                                                <td colSpan="4" className="text-center text-muted py-5">
-                                                    {searchTerm ? 'No models found matching your search' : 'No models added yet'}
-                                                </td>
-                                            </tr>
-                                        )}
-                                    </tbody>
-                                </Table>
-                            </div>
-                        </Card.Body>
-                    </Card>
-                </Col>
-            </Row>
+          {/* Quick Info Box */}
+          <div className="saas-card p-3 bg-light">
+            <div className="d-flex align-items-center gap-2 mb-1">
+              <Sparkles size={16} className="text-primary" />
+              <span className="fw-semibold small">Quick Stats</span>
+            </div>
+            <p className="small text-secondary mb-0">
+              Total registered vehicle models:{' '}
+              <strong className="text-primary">{models.length}</strong>
+            </p>
+          </div>
         </div>
-    );
+
+        {/* Right Column: Existing Models List */}
+        <div className="col-12 col-lg-8">
+          <div className="saas-card">
+            <div className="saas-card-header flex-wrap gap-2">
+              <div className="saas-card-title">
+                <Car size={18} className="text-primary" />
+                <span>Existing Models ({filteredModels.length})</span>
+              </div>
+
+              <div className="position-relative w-100" style={{ maxWidth: '220px' }}>
+                <Search
+                  size={14}
+                  className="position-absolute text-tertiary"
+                  style={{ left: '10px', top: '50%', transform: 'translateY(-50%)' }}
+                />
+                <input
+                  type="text"
+                  placeholder="Filter models..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="form-control-saas py-1"
+                  style={{ paddingLeft: '30px', fontSize: '12.5px', height: '32px' }}
+                />
+              </div>
+            </div>
+
+            {filteredModels.length === 0 ? (
+              <EmptyState
+                icon={<Car size={32} />}
+                title="No models found"
+                description={
+                  searchTerm
+                    ? `No vehicle models matched "${searchTerm}".`
+                    : 'No models added yet. Add your first vehicle model using the form on the left.'
+                }
+              />
+            ) : (
+              <div className="saas-table-container border-0 rounded-0">
+                <table className="saas-table">
+                  <thead>
+                    <tr>
+                      <th style={{ width: '50px' }}>#</th>
+                      <th>Model Name</th>
+                      <th>Classification</th>
+                      <th className="text-end">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredModels.map((m, idx) => (
+                      <tr key={m._id}>
+                        <td className="text-secondary small">{idx + 1}</td>
+                        <td className="fw-semibold text-primary">{m.name}</td>
+                        <td>{getTypeBadge(m.type)}</td>
+                        <td className="text-end">
+                          <button
+                            onClick={() => setModelToDelete(m)}
+                            className="btn-saas btn-saas-outline-danger btn-saas-icon"
+                            title="Delete model"
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmDialog
+        show={!!modelToDelete}
+        title="Delete Vehicle Model"
+        message={`Are you sure you want to delete model "${modelToDelete?.name}"?`}
+        confirmText="Delete Model"
+        confirmVariant="danger"
+        onConfirm={confirmDeleteModel}
+        onCancel={() => setModelToDelete(null)}
+      />
+    </div>
+  );
 };
 
 export default AddModel;

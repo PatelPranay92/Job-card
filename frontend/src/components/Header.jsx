@@ -6,7 +6,7 @@ import './Header.css';
 
 const Header = () => {
     const navigate = useNavigate();
-    const user = getUser();
+    const _user = getUser();
     const adminUser = isAdmin();
 
     const handleLogout = () => {
